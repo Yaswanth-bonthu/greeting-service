@@ -1,4 +1,4 @@
-import {transporter} from "../utils/transporterUtil.js";
+import { transporter } from "../utils/transporterUtil.js";
 import calculateAge from "../utils/ageCalculator.js";
 
 const EMAIL = process.env.EMAIL;
@@ -19,13 +19,13 @@ export default async function sendGreetings(template, userDetails) {
 
     // Sends the email using transporter.sendMail and logs success or error messages
     try {
-		const info = await transporter.sendMail(mailOptions);
-		console.log("Email sent: ", info.response);
-		return { success: true, email: userDetails.email };
-	} catch (error) {
-		console.log(error);
-		return { success: false, email: userDetails.email };
-	}
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent: ", info.response);
+        return { success: true, email: userDetails.email };
+    } catch (error) {
+        console.log(error);
+        return { success: false, email: userDetails.email };
+    }
 }
 
 /// Function to generate the HTML content of the email
@@ -44,10 +44,18 @@ function createEmailContent(template, userDetails) {
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
                                     <tr>
-                                        <td align="center">
-                                            <img src="${template.templeBanner}" alt="Temple Banner"/>
-                                        </td>
-                                    </tr>
+                            <td align="center">
+                                ${template.banner && (template.banner.endsWith(".gif") || template.banner.endsWith(".png") || template.banner.endsWith(".jpg") || template.banner.endsWith(".jpeg"))
+                                ? `<img src="${template.banner}" 
+                                    alt="Banner Image" 
+                                    style="width: 70%; max-width: 300px; height: auto; border-radius: 8px;">`
+                                : `<img src="https://cdn.templates.unlayer.com/assets/1676265088672-cake.png" 
+                                    alt="Default Birthday Cake" 
+                                    style="width: 70%; max-width: 300px; height: auto; border-radius: 8px;">`
+                                }
+                            </td>
+                            </tr>
+
                                 </tbody>
                             </table>
                             <div style="margin: 10px 0px; text-align: center">
@@ -128,4 +136,3 @@ function createEmailContent(template, userDetails) {
 
     return html;
 }
-

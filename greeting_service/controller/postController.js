@@ -19,9 +19,32 @@ const createPost = async (req, res) => {
 		const result = await cloudinary.uploader.upload(req.file.path, {
 			resource_type: req.file.mimetype.startsWith("video") ? "video" : "image",
 		});
+		let mediaURL = result.secure_url;
 
-		const mediaURL = result.secure_url;
-		const newPost = new PostModel({ postDescription, postName, userId, mediaURL, type: type || null, isGlobal: false, });
+		if (req.file.mimetype.startsWith("video")) {
+			const publicId = result.public_id;
+
+			mediaURL = cloudinary.url(publicId, {
+				resource_type: "video",
+				format: "gif",
+				transformation: [
+					{ width: 600, crop: "scale" },
+					{ fps: 15 },
+					{ duration: 5 },
+					{ effect: "loop" }
+				],
+			});
+		}
+
+		const newPost = new PostModel({
+			postDescription,
+			postName,
+			userId,
+			mediaURL,
+			type: type || null,
+			isGlobal: false,
+		});
+
 		const savedPost = await newPost.save();
 		res.status(201).json(savedPost);
 	} catch (err) {
@@ -36,7 +59,7 @@ const getAllPosts = async (req, res) => {
 		const { page = 1, limit = 10 } = req.query;
 		const userId = req.user.userId;
 		const skip = (page - 1) * limit;
-		const posts = await PostModel.find({ $or: [{ userId }, { isGlobal: true }] }).skip(skip).limit(limit);
+		const posts = await PostModel.find({ $or: [{ userId }, { isGlobal: true }] }).skip(skip);
 		const totalPosts = await PostModel.countDocuments({ $or: [{ userId }, { isGlobal: true }] });
 		res.status(200).send({ currentPage: page, totalPages: Math.ceil(totalPosts / limit), posts: posts });
 	} catch (err) {

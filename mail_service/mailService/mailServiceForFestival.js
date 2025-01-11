@@ -1,4 +1,4 @@
-import {transporter} from "../utils/transporterUtil.js";
+import { transporter } from "../utils/transporterUtil.js";
 
 const EMAIL = process.env.EMAIL;
 
@@ -43,12 +43,18 @@ function createEmailContent(template, userDetails) {
 		style="max-width: 600px; margin: 20px auto; background: #020d21; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">
 		<!-- Image -->
 		<tr>
-			<td style="text-align: center;">
-				<img
-					src=${template.banner || "https://res.cloudinary.com/dnl1wajhw/image/upload/v1735622347/New_Year__3_-removebg-preview_huihni.png"}
-					alt="Happy New Year 2025" style="width: 100%; max-width: 600px; height: auto;">
-			</td>
-		</tr>
+  <td style="text-align: center;">
+    ${template.banner && (template.banner.endsWith(".gif") || template.banner.endsWith(".png") || template.banner.endsWith(".jpg") || template.banner.endsWith(".jpeg"))
+			? `<img src="${template.banner}" 
+							alt="Banner Image" 
+							style="width: 70%; max-width: 300px; height: auto; border-radius: 8px;">`
+			: `<img src="https://cdn.templates.unlayer.com/assets/1676265088672-cake.png" 
+							alt="Default Birthday Cake" 
+							style="width: 70%; max-width: 300px; height: auto; border-radius: 8px;">`
+		}
+  </td>
+</tr>
+
 		<!-- Title and Description -->
 		<tr>
 			<td style="padding: 40px; text-align: center;">
@@ -90,4 +96,3 @@ function createEmailContent(template, userDetails) {
 
 	return html;
 }
-
