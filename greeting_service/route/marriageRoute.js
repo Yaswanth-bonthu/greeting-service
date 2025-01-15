@@ -1,5 +1,5 @@
 import express from 'express';
-import {createMarriageDetails, getAllMarriageDetails, getMarriageDetails, updateMarriageDetails, deleteMarriageDetails} from "../controllers/marriageController.js";
+import {createMarriageDetails, getAllMarriageDetails, getMarriageDetails, updateMarriageDetails, deleteMarriageDetails} from "../controller/marriageController.js";
 import {authMiddleware} from '../middleware/authMiddleware.js';
 import { configureFileUpload } from '../middleware/fileStorage.js';
 

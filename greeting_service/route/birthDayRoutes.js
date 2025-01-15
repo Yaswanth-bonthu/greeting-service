@@ -1,6 +1,6 @@
 
 import express from 'express';
-import {createBirthDayDetails, getAllBirthDayDetails, getBirthDayDetails, updateBirthDayDetails, deleteBirthDayDetails} from "../controllers/birthDayController.js";
+import {createBirthDayDetails, getAllBirthDayDetails, getBirthDayDetails, updateBirthDayDetails, deleteBirthDayDetails} from "../controller/birthDayController.js";
 import {authMiddleware} from '../middleware/authMiddleware.js';
 import { configureFileUpload } from '../middleware/fileStorage.js';
 

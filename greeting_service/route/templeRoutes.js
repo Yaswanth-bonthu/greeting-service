@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {createTemple, getAllTemples, getTemple, deleteTemple, updateTemple} from "../controllers/templeController.js";
+import {createTemple, getAllTemples, getTemple, deleteTemple, updateTemple} from "../controller/templeController.js";
 import {authMiddleware} from '../middleware/authMiddleware.js';
 import {configureFileUpload} from "../middleware/fileStorage.js";
 

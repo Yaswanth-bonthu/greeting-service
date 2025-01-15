@@ -2,6 +2,9 @@ import express from "express";
 import cors from 'cors';
 import path from "path";
 import dotenv from 'dotenv';
+import session from 'express-session';
+import passport from 'passport';
+
 
 import connectDB from './config/db.js';
 import postRoutes from './route/postRoutes.js';
@@ -15,6 +18,7 @@ import { scheduleRouter } from "./route/scheduleRoutes.js";
 import { watchSchedules } from "./schedular/scheduleJob.js";
 import responseRouter from "./route/responseRoutes.js";
 import createPredefinedTemplates from "./utils/createPredefinedTemplates.js";
+import "./utils/passport.js";
 
 dotenv.config();
 
@@ -25,6 +29,10 @@ app.use(cors());
 
 // Middleware to parse JSON request bodies
 app.use(express.json({ limit: '6mb' }));
+
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware to catch and handle errors caused by payloads exceeding the limit
 app.use((err, req, res, next) => {

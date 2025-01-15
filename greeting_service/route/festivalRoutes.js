@@ -1,5 +1,5 @@
 import express from 'express';
-import {createFestival, getFestival, getAllFestivalDetails, updateFestivalDetails, deleteFestivalDetils} from "../controllers/festivalController.js";
+import {createFestival, getFestival, getAllFestivalDetails, updateFestivalDetails, deleteFestivalDetils} from "../controller/festivalController.js";
 import {authMiddleware} from '../middleware/authMiddleware.js';
 import { configureFileUpload } from '../middleware/fileStorage.js';
 
