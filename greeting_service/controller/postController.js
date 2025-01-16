@@ -1,5 +1,7 @@
 import cloudinary from '../cloudinary/config.js';
 import PostModel from '../model/PostModel.js';
+import Analytics from "../model/AnalyticsModel.js";
+
 
 // Create a new post
 const createPost = async (req, res) => {
@@ -44,6 +46,18 @@ const createPost = async (req, res) => {
 			type: type || null,
 			isGlobal: false,
 		});
+
+		const analytics = Analytics.findOne({
+			user: userId
+		});
+		if(type === ""){
+			analytics.templatesCreated = {
+				birthday: analytics?.templatesCreated?.birthday 
+			}
+		}
+		else if(type === "")
+		
+		await analytics.save();
 
 		const savedPost = await newPost.save();
 		res.status(201).json(savedPost);

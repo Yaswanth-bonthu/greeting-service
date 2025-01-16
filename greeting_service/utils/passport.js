@@ -1,6 +1,7 @@
 import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
 import User from '../model/User.js';
+import Analytics from "../model/AnalyticsModel.js";
 
 passport.use(
   new GoogleStrategy(
@@ -11,7 +12,7 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ googleId: profile.id });
+        let user = await User.findOne({ $or: [{googleId: profile.id}, {email: profile.emails[0].value}] });
         if (!user) {
           user = new User({
             first_name: profile.name.givenName,
@@ -20,6 +21,11 @@ passport.use(
             googleId: profile.id,
           });
           await user.save();
+          const analytics = new Analytics({
+            user: user._id,
+          });
+      
+          await analytics.save();
         }
         done(null, user);
       } catch (err) {

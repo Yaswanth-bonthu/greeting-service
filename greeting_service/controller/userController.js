@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../model/User.js';
+import Analytics from "../model/AnalyticsModel.js";
 
 // Create a new user
 export const createUser = async (req, res) => {
@@ -35,6 +36,12 @@ export const createUser = async (req, res) => {
 		});
 
 		await user.save();
+
+		const analytics = new Analytics({
+			user: user._id,
+		});
+
+		await analytics.save();
 		res.status(201).json({ message: 'User created successfully!' });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
@@ -123,6 +130,7 @@ export const deleteUser = async (req, res) => {
 		if (!deletedUser) {
 			return res.status(404).json({ message: 'User not found' });
 		}
+		await Analytics.findOneAndDelete({ user: req.params.id });
 		res.json({ message: 'User deleted successfully' });
 	} catch (err) {
 		res.status(500).json({ message: err.message });

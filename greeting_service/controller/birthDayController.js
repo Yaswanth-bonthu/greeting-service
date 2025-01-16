@@ -1,6 +1,7 @@
 import {BirthDayModel} from "../model/BirthDayModel.js";
 import { saveUsersWithBirthDay } from "./csvUserController.js";
 import {scheduleByDefault} from "./scheduleController.js"
+import Analytics from "../model/AnalyticsModel.js";
 
 
 const getBirthDayData = async (birthDayId, targetDate = null) => {
