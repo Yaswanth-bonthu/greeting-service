@@ -18,6 +18,7 @@ import { scheduleRouter } from "./route/scheduleRoutes.js";
 import { watchSchedules } from "./schedular/scheduleJob.js";
 import responseRouter from "./route/responseRoutes.js";
 import createPredefinedTemplates from "./utils/createPredefinedTemplates.js";
+import analyticsRoutes from './route/analyticsRoutes.js';
 import "./utils/passport.js";
 
 dotenv.config();
@@ -71,6 +72,8 @@ app.use('/post', postRoutes);
 app.use("/schedule", scheduleRouter);
 
 app.use("/response", responseRouter);
+
+app.use("/analytics", analyticsRoutes);
 
 // Server setup
 const port = process.env.DB_PORT || 3000;  // Default port is 3000 if DB_PORT is not specified
