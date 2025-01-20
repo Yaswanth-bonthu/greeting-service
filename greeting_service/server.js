@@ -43,6 +43,13 @@ app.use((err, req, res, next) => {
   }
 });
 
+app.use((req, res, next) => {
+  if (req.headers["x-forwarded-proto"] !== "https") {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+  next();
+});
+
 
 // Middleware to serve static files from the 'uploads' directory
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
