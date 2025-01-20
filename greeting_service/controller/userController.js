@@ -154,7 +154,7 @@ export const googleCallback = async (req, res) => {
 
         const userName = `${user.first_name} ${user.last_name}`;
         
-        // Redirecting to the frontend with the token and userName as query parameters
+        
         res.redirect(`${process.env.FRONTEND_URL}?token=${token}&userName=${userName}`);
     } catch (error) {
         console.error("Error in googleCallback:", error);
