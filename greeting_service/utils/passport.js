@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/users/google/callback',
+      callbackURL: "https://greeting-microservice.onrender.com/users/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
