@@ -30,4 +30,6 @@ const EmailConfig = mongoose.Schema({
     }
 }, { timestamps: true });
 
-export default EmailConfigModel = mongoose.model("emailconfig", EmailConfig);
+const EmailConfigModel = mongoose.model("emailconfig", EmailConfig);
+
+export default EmailConfigModel;

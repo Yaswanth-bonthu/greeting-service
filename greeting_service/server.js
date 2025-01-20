@@ -21,6 +21,8 @@ import createPredefinedTemplates from "./utils/createPredefinedTemplates.js";
 import analyticsRoutes from './route/analyticsRoutes.js';
 import "./utils/passport.js";
 
+const port = process.env.DB_PORT || 3000;  // Default port is 3000 if DB_PORT is not specified
+
 dotenv.config();
 
 const app = express();
@@ -42,6 +44,13 @@ app.use((err, req, res, next) => {
   } else {
     next(err);
   }
+});
+
+app.use((req, res, next) => {
+  if (req.headers["x-forwarded-proto"] !== "https") {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+  next();
 });
 
 
@@ -74,9 +83,12 @@ app.use("/schedule", scheduleRouter);
 app.use("/response", responseRouter);
 
 app.use("/analytics", analyticsRoutes);
+app.get("/", (req, res) => {
+  res.status(200).send(`Server running upon the port : ${port}`);
+})
 
 // Server setup
-const port = process.env.DB_PORT || 3000;  // Default port is 3000 if DB_PORT is not specified
+
 app.listen(port, async () => {
   console.log(`Server Started on port ${port}`);
   // Connect to MongoDB

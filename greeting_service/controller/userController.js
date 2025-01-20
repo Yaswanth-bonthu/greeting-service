@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import User from '../model/User.js';
 import Analytics from "../model/AnalyticsModel.js";
 
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
 // Create a new user
 export const createUser = async (req, res) => {
 	const { first_name, last_name, email, password, confirm_password } = req.body;
@@ -145,8 +147,9 @@ export const googleCallback = async(req, res) => {
 			process.env.JWT_SECRET,
 			{ expiresIn: '1d' }
 		);
+		const userName = `${user.first_name} ${user.last_name}`
 
-		res.json({ token, userName: `${user.first_name} ${user.last_name}` });
+		res.rediect(`${FRONTEND_URL}?token=${token}&userName=${userName}`)
 	} catch (error) {
 		console.log("Error in the googleCallback, ", error);
 		res.status(500).send({error: "Internal server error..."});

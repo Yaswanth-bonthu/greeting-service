@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -23,4 +24,21 @@ const connectDB = async () => {
 };
 
 
-export { connectDB };
+
+const connectMongoose = async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log("Mongoose connected to MongoDB");
+  } catch (error) {
+    console.error(`Mongoose connection error: ${error.message}`);
+    throw error;
+  }
+};
+
+
+
+
+export { connectDB, connectMongoose };
+
+
+
