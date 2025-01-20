@@ -80,7 +80,9 @@ const sendScheduledMailsFromBirthDay = async (req, res) => {
             if (emailConfig.status === "pause") {
                 return res.status(200).send({ message: "Please change status of EmailConfig to active to send the mails." });
             }
+            console.log("emailConfig", emailConfig);
             const transporter = getTransportConfig(emailConfig.emailType, emailConfig.email, emailConfig.passkey);
+            console.log("transporter", transporter);
             for (const user of data.csvData) {
                 const response = await sendGreetings(template, user, transporter, emailConfig.email, emailConfig.displayName);
                 response.ref = id;
