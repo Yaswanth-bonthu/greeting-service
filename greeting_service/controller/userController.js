@@ -139,19 +139,25 @@ export const deleteUser = async (req, res) => {
 	}
 };
 
-export const googleCallback = async(req, res) => {
-	try {
-		const user = req.user;
-		const token = await jwt.sign(
-			{ userId: user._id, email: user.email },
-			process.env.JWT_SECRET,
-			{ expiresIn: '1d' }
-		);
-		const userName = `${user.first_name} ${user.last_name}`
+export const googleCallback = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(400).send({ error: "Authentication failed. No user found." });
+        }
 
-		res.rediect(`${FRONTEND_URL}?token=${token}&userName=${userName}`)
-	} catch (error) {
-		console.log("Error in the googleCallback, ", error);
-		res.status(500).send({error: "Internal server error..."});
-	}
-}
+        const user = req.user;
+        const token = jwt.sign(
+            { userId: user._id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1d' }
+        );
+
+        const userName = `${user.first_name} ${user.last_name}`;
+        
+        // Redirecting to the frontend with the token and userName as query parameters
+        res.redirect(`${process.env.FRONTEND_URL}?token=${token}&userName=${userName}`);
+    } catch (error) {
+        console.error("Error in googleCallback:", error);
+        res.status(500).send({ error: "Internal server error..." });
+    }
+};
