@@ -28,7 +28,7 @@ export const getAnalyticsData = async (req, res) => {
 
 		// Schedules
 		const scheduleStatuses = ["schedule_now", "schedule_later", "pause", "completed", "automate"];
-		const scheduleTypes = ["birthday", "festival", "anniversary", "event", "occasion", "temple"];
+		const scheduleTypes = ["birthday", "festival", "marriage", "event", "occasion", "temple"];
 		const schedules = {};
 
 		for (const type of scheduleTypes) {
