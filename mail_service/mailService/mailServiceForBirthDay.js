@@ -1,17 +1,15 @@
-import { transporter } from "../utils/transporterUtil.js";
 import calculateAge from "../utils/ageCalculator.js";
 
-const EMAIL = process.env.EMAIL;
 
 
-export default async function sendGreetings(template, userDetails) {
+export default async function sendGreetings(template, userDetails, transporter, EMAIL, displayName) {
 
 	console.log("Sending the birthday email for ", userDetails.email);
 	const age = calculateAge(userDetails.birthdate);
 
 	// Constructs an email object with the following details
 	const mailOptions = {
-		from: `Incrivelsoft Team ${EMAIL}`,
+		from: `${displayName} ${EMAIL}`,
 		to: userDetails.email,
 		subject: template.title || "Happy Birthday",
 		html: createEmailContent(template, userDetails, age)
@@ -38,7 +36,7 @@ function createEmailContent(template, userDetails, age) {
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			<title>Happy Birthday ${userDetails.first_name || "Ravi"} ${userDetails.last_name || "kiran"}</title>
+			<title>Happy Birthday ${userDetails.first_name || ""} ${userDetails.last_name || ""}</title>
 		</head>
 
 		<body style="margin: 0; padding: 0; font-family: 'Open Sans', sans-serif;">
@@ -53,7 +51,7 @@ function createEmailContent(template, userDetails, age) {
 				<!-- Image -->
 				<tr>
 					<td style="text-align: center; padding: 20px;">
-						${template.banner && (template.banner.endsWith(".gif") || template.banner.endsWith(".png") || template.banner.endsWith(".jpg") || template.banner.endsWith(".jpeg"))
+						${template.banner && (template.banner.includes(".gif") || template.banner.includes(".png") || template.banner.includes(".jpg") || template.banner.includes(".jpeg"))
 							? `<img src="${template.banner}" 
 							alt="Banner Image" 
 							style="width: 70%; max-width: 300px; height: auto; border-radius: 8px;">`

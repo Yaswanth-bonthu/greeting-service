@@ -1,5 +1,7 @@
 import { getFestivalData, updateFestivalResponse, saveResponse } from "../controller/controller.js";
 import sendGreetings from "../mailService/mailServiceForFestival.js";
+import { getUserEmailConfig } from "../controller/emailConfigController.js";
+import { getTransportConfig } from "../utils/transporterUtil.js";
 // import sendWhatsappMessage from "../whatsappService/whatsappServiceForBirthdays.js";
 import delay from 'delay';
 
@@ -32,8 +34,14 @@ const sendScheduledMailsFromFestival = async (req, res) => {
         if (data) {
             const template = await createTemplate(data);
             const responseArray = [];
+            const emailConfig = getUserEmailConfig(data.user);
+            if(emailConfig.status === "pause")
+            {
+                return res.status(200).send({message: "Please change status of EmailConfig to active to send the mails."});
+            }
+            const transporter = getTransportConfig(emailConfig.emailType, emailConfig.email, emailConfig.passkey)
             for (const user of data.csvData) {
-                const response = await sendGreetings(template, user);
+                const response = await sendGreetings(template, user, transporter, emailConfig.email, emailConfig.displayName);
                 response.ref = id;
                 responseArray.push(response);
                 await delay(1000);

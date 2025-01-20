@@ -6,6 +6,7 @@ import { sendScheduledMailsFromEvent } from "./utils/eventUtils.js";
 import { sendScheduledMailsFromFestival } from "./utils/festivalUtils.js";
 import { sendScheduledMailsFromMarriageDay, sendAutoMailsFromMarriage } from "./utils/marriageUtils.js";
 import { sendScheduledMailsFromTemple, sendAutoMailsFromTemple } from "./utils/templeUtils.js";
+import { router } from "./route/emailConfigRouter.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -31,6 +32,8 @@ app.post("/marriage/:id", sendScheduledMailsFromMarriageDay);
 
 app.post("/automate-temple", sendAutoMailsFromTemple);
 app.post("/temple/:id", sendScheduledMailsFromTemple);
+
+app.use("/email-config", router);
 
 app.listen(PORT, () => {
     console.log(`Server running upon the port: ${PORT}`);
