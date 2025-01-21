@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import User from '../model/User.js';
 import Analytics from "../model/AnalyticsModel.js";
 
-const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // Create a new user
 export const createUser = async (req, res) => {

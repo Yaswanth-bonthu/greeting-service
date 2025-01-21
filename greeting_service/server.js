@@ -19,6 +19,7 @@ import { watchSchedules } from "./schedular/scheduleJob.js";
 import responseRouter from "./route/responseRoutes.js";
 import createPredefinedTemplates from "./utils/createPredefinedTemplates.js";
 import analyticsRoutes from './route/analyticsRoutes.js';
+import userTicketingRouter from "./route/userTicketingRoutes.js";
 import "./utils/passport.js";
 
 const port = process.env.DB_PORT || 3000;  // Default port is 3000 if DB_PORT is not specified
@@ -83,6 +84,8 @@ app.use("/schedule", scheduleRouter);
 app.use("/response", responseRouter);
 
 app.use("/analytics", analyticsRoutes);
+
+app.use("/user-ticketing", userTicketingRouter);
 app.get("/", (req, res) => {
   res.status(200).send(`Server running upon the port : ${port}`);
 })
