@@ -4,6 +4,28 @@ import { ContactDetails } from "../model/Contact.js";
 const saveContact = async( req, res ) => {
     try {
         const { fullName, email, message, phoneNumber, whatsappNumber } = req.body;
+        const emailSet = [];
+        const mobileSet = [];
+
+        if (!fullName) emailSet.push("fullName");
+        if (!email) emailSet.push("email");
+        if (!message) emailSet.push("message");
+
+        if (!phoneNumber) mobileSet.push("phoneNumber");
+        if (!whatsappNumber) mobileSet.push("whatsappNumber");
+
+        if (emailSet.length > 0 && phoneNumber && whatsappNumber) {
+            return res.status(400).send({
+                error: `The following fields are missing: ${emailSet.join(", ")}`
+            });
+        }
+
+        if (mobileSet.length > 0 && fullName && email && message) {
+            return res.status(400).send({
+                error: `The following fields are missing: ${mobileSet.join(", ")}`
+            });
+        }
+
         const detailsToSave = { fullName, email, message, phoneNumber, whatsappNumber };
         Object.keys(detailsToSave).forEach((key) => {
             if(key === undefined)
