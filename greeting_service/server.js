@@ -21,6 +21,7 @@ import createPredefinedTemplates from "./utils/createPredefinedTemplates.js";
 import analyticsRoutes from './route/analyticsRoutes.js';
 import userTicketingRouter from "./route/userTicketingRoutes.js";
 import contactRoute from "./route/contactRoutes.js";
+import { createDefaultAdmin } from "./utils/createDefaultAdmin.js";
 import "./utils/passport.js";
 
 const port = process.env.DB_PORT || 3000;  // Default port is 3000 if DB_PORT is not specified
@@ -89,6 +90,7 @@ app.use("/analytics", analyticsRoutes);
 app.use("/user-ticketing", userTicketingRouter);
 
 app.use("/contact", contactRoute);
+
 app.get("/", (req, res) => {
   res.status(200).send(`Server running upon the port : ${port}`);
 })
@@ -103,7 +105,8 @@ app.listen(port, async () => {
   await watchSchedules();
   // Create predefined templates
   await createPredefinedTemplates();
-
+  // Ensure default admin is created
+  await createDefaultAdmin();
   const currentDate = new Date();
   currentDate.setMinutes(currentDate.getMinutes() + 5);
   console.log(currentDate);
