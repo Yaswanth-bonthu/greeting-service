@@ -19,9 +19,9 @@ const EmailConfig = mongoose.Schema({
         required: true,
     },
     user: {
-        type: String,
-        required: true,
-        unique: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserDetails",
+        default: null,
     },
     status: {
         type: String,

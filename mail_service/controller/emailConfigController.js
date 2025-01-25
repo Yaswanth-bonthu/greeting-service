@@ -11,13 +11,12 @@ export const getUserEmailConfig = async( user ) => {
     }
 }
 
-
 export const createEmailConfig = async (req, res) => {
     try {
-        const { email, passkey, displayName, emailType, user, status } = req.body;
-
-        // Validate input
-        if (!email || !passkey || !displayName || !emailType || !user) {
+        const { email, passkey, displayName, emailType, status } = req.body;
+        const user = req.user.userId;
+        
+        if (!email || !passkey || !displayName || !emailType) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -45,10 +44,9 @@ export const createEmailConfig = async (req, res) => {
     }
 };
 
-
 export const updateEmailConfig = async (req, res) => {
     try {
-        const { user } = req.params; // Get user from the request params
+        const user = req.user.userId; // Get user from the request params
         const updateFields = req.body; // Fields to update from request body
 
         // Check if the email configuration for the user exists
@@ -71,16 +69,15 @@ export const updateEmailConfig = async (req, res) => {
     }
 };
 
-
 // Fetch Email Configuration
 export const getEmailConfig = async (req, res) => {
     try {
-        const { user } = req.params;
+        const user = req.user.userId;
 
         const emailConfig = await EmailConfigModel.findOne({ user });
 
         if (!emailConfig) {
-            return res.status(404).json({ message: "Email configuration not found" });
+            return res.status(204).json({ message: "Email configuration not found" });
         }
 
         res.status(200).json({ emailConfig });
@@ -93,8 +90,7 @@ export const getEmailConfig = async (req, res) => {
 // Delete Email Configuration
 export const deleteEmailConfig = async (req, res) => {
     try {
-        const { user } = req.params;
-
+        const user = req.user.userId;
         const emailConfig = await EmailConfigModel.findOneAndDelete({ user });
 
         if (!emailConfig) {
