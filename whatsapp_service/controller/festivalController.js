@@ -3,8 +3,8 @@ import {sendToMultipleUser, sendToSingleUser} from "../utils/sendWhatsappMessage
 import delay from 'delay';
 
 
-const template_name = "navratri_and_dussehra_eng";
-const broadcast_name = "Untitled_080120251029";
+const template_name = "republic_day";
+const broadcast_name = "republic_day_broadcast";
 
 const parameters = (templateDetails, userDetails) => {
     return [
@@ -22,7 +22,7 @@ const parameters = (templateDetails, userDetails) => {
         },
         {
             "name": "from",
-            "value": templateDetails?.from,
+            "value": templateDetails?.from || "Incrivelsoft team",
         },
         {
             "name": "address",

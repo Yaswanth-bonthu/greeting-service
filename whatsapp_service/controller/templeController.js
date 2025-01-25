@@ -5,8 +5,8 @@ import delay from 'delay';
 
 const todayDate = getTodayDate();
 
-const template_name = "navratri_and_dussehra_eng";
-const broadcast_name = "Untitled_080120251029";
+const template_name = "republic_day";
+const broadcast_name = "republic_day_broadcast";
 
 const parameters = (templateDetails, userDetails) => {
     return [
@@ -16,7 +16,7 @@ const parameters = (templateDetails, userDetails) => {
         },
         {
             "name": "from",
-            "value": templateDetails?.templeName,
+            "value": templateDetails?.templeName || "Incrivelsoft team",
         },
         {
             "name": "address",
