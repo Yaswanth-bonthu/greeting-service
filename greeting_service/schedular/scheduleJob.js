@@ -4,6 +4,7 @@ import { scheduleSchema } from '../model/Schedule.js';
 import consoleResponse from "../utils/responseConsole.js";
 
 const MAIL_SERVICE_URL = process.env.MAIL_SERVICE_URL;
+const WHATSAPP_SERVICE_URL = process.env.WHATSAPP_SERVICE_URL;
 
 
 const scheduleJobs = (job) => {
