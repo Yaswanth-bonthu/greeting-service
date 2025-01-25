@@ -14,7 +14,7 @@ export const getUserEmailConfig = async( user ) => {
 
 export const createEmailConfig = async (req, res) => {
     try {
-        const { email, paaskey, displayName, emailType, user, status } = req.body;
+        const { email, passkey, displayName, emailType, user, status } = req.body;
 
         // Validate input
         if (!email || !passkey || !displayName || !emailType || !user) {
