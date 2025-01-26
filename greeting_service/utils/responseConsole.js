@@ -1,10 +1,10 @@
-const consoleResponse = (res, location) => {
+const consoleResponse = (type, res, location) => {
     if(res.status === 200)
     {
-        console.log(res.data.message, location);
+        console.log(type, res.data.message, location);
     }
     else{
-        console.log(res.data.error, location);
+        console.log(type, res.data.error, location);
     }
 }
 

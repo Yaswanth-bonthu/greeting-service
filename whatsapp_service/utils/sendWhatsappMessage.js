@@ -24,9 +24,9 @@ const sendToSingleUser = async(template_name, broadcast_name, whatsappNumber, pa
         {
             throw new Error(res.data);
         }
-        if(res.data.result === false)
+        if(!res.data.result)
         {
-            console.log("Failed to sent the message to : ", whatsappNumber);
+            console.log("Failed to sent the message to : ", res.data);
             return { success: false, contact: whatsappNumber };
         }
 

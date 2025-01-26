@@ -54,83 +54,82 @@ const handleJobExecution = async (job) => {
             case "temple":
                 if (job.mode === "email") {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/temple/${job.temple}`);
-                    consoleResponse(res, "temple");
-                    // await sendScheduledMailsFromTemple(job.temple);
+                    consoleResponse("Response at mail-service ", res, "temple");
                 }
                 else if (job.mode === "whatsapp") {
                     const res = await axios.post(`${WHATSAPP_SERVICE_URL}/temple/${job.temple}`);
-                    consoleResponse(res, "temple");
+                    consoleResponse("Response at whatsapp-service ", res, "temple");
                 }
                 else {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/temple/${job.temple}`);
-                    consoleResponse(res, "temple");
+                    consoleResponse("Response at mail-service ", res, "temple");
                     const response = await axios.post(`${WHATSAPP_SERVICE_URL}/temple/${job.temple}`);
-                    consoleResponse(response, "temple");
+                    consoleResponse("Response at whatsapp-service ", response, "temple");
                 }
 
                 break;
             case "birthday":
                 if (job.mode === "email") {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/birthday/${job.birthday}`);
-                    consoleResponse(res, "birthaday");
+                    consoleResponse("Response at mail-service ", res, "birthaday");
                 }
                 else if (job.mode === "whatsapp") {
                     const res = await axios.post(`${WHATSAPP_SERVICE_URL}/birthday/${job.birthday}`);
-                    consoleResponse(res, "birthaday");
+                    consoleResponse("Response at whatsapp-service ", res, "birthaday");
                 }
                 else {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/birthday/${job.birthday}`);
-                    consoleResponse(res, "birthday");
+                    consoleResponse("Response at mail-service ", res, "birthday");
                     const response = await axios.post(`${WHATSAPP_SERVICE_URL}/birthday/${job.birthday}`);
-                    consoleResponse(response, "birthaday");
+                    consoleResponse("Response at whatsapp-service ", response, "birthaday");
                 }
                 break;
             case "event":
                 if (job.mode === "email") {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/event/${job.event}`);
-                    consoleResponse(res, "event");
+                    consoleResponse("Response at mail-service ", res, "event");
                 }
                 else if (job.mode === "whatsapp") {
                     const res = await axios.post(`${WHATSAPP_SERVICE_URL}/event/${job.event}`);
-                    consoleResponse(res, "event");
+                    consoleResponse("Response at whatsapp-service ", res, "event");
                 }
                 else {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/event/${job.event}`);
-                    consoleResponse(res, "event");
+                    consoleResponse("Response at mail-service ", res, "event");
                     const response = await axios.post(`${WHATSAPP_SERVICE_URL}/event/${job.event}`);
-                    consoleResponse(response, "event");
+                    consoleResponse("Response at whatsapp-service ", response, "event");
                 }
                 break;
             case "festival":
                 if (job.mode === "email") {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/festival/${job.festival}`);
-                    consoleResponse(res, "festival");
+                    consoleResponse("Response at mail-service ", res, "festival");
                 }
                 else if (job.mode === "whatsapp") {
                     const res = await axios.post(`${WHATSAPP_SERVICE_URL}/festival/${job.festival}`);
-                    consoleResponse(res, "festival");
+                    consoleResponse("Response at whatsapp-service ", res, "festival");
                 }
                 else {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/festival/${job.festival}`);
-                    consoleResponse(res, "festival");
+                    consoleResponse("Response at mail-service ", res, "festival");
                     const response = await axios.post(`${WHATSAPP_SERVICE_URL}/festival/${job.festival}`);
-                    consoleResponse(response, "festival");
+                    consoleResponse("Response at whatsapp-service ", response, "festival");
                 }
                 break;
             case "marriage":
                 if (job.mode === "email") {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/marriage/${job.marriage}`);
-                    consoleResponse(res, "marriage");
+                    consoleResponse("Response at mail-service ", res, "marriage");
                 }
                 else if (job.mode === "whatsapp") {
                     const res = await axios.post(`${WHATSAPP_SERVICE_URL}/marriage/${job.marriage}`);
-                    consoleResponse(res, "marriage");
+                    consoleResponse("Response at whatsapp-service ", res, "marriage");
                 }
                 else {
                     const res = await axios.post(`${MAIL_SERVICE_URL}/marriage/${job.marriage}`);
-                    consoleResponse(res, "marriage");
+                    consoleResponse("Response at mail-service ", res, "marriage");
                     const response = await axios.post(`${WHATSAPP_SERVICE_URL}/marriage/${job.marriage}`);
-                    consoleResponse(response, "marriage");
+                    consoleResponse("Response at whatsapp-service ", response, "marriage");
                 }
                 break;
             default:
@@ -151,7 +150,7 @@ export const watchSchedules = async () => {
         console.log('Watching ScheduleDetails collection for changes...');
 
         changeStream.on('change', async (change) => {
-            console.log('Change detected:', change);
+            // console.log('Change detected:', change);
 
             if (change.operationType === 'insert') {
                 const newJob = change.fullDocument;
@@ -187,17 +186,17 @@ schedule.scheduleJob('26 19 * * *', async () => {
     try {
         console.log('Scheduled job triggered at:', new Date());
         const res1 = await axios.post(`${MAIL_SERVICE_URL}/automate-birthday`);
-        consoleResponse(res1, "automate-birthday-mail");
+        consoleResponse("Response at mail-service ", res1, "automate-birthday-mail");
         const res2 = await axios.post(`${MAIL_SERVICE_URL}/automate-marriage`);
-        consoleResponse(res2, "automate-marriage-mail");
+        consoleResponse("Response at mail-service ", res2, "automate-marriage-mail");
         const res3 = await axios.post(`${MAIL_SERVICE_URL}/automate-temple`);
-        consoleResponse(res3, "automate-temple-mail");
+        consoleResponse("Response at mail-service ", res3, "automate-temple-mail");
         const res4 = await axios.post(`${WHATSAPP_SERVICE_URL}/automate-birthday`);
-        consoleResponse(res4, "automate-birthday-whatsapp");
+        consoleResponse("Response at whatsapp-service ", res4, "automate-birthday-whatsapp");
         const res5 = await axios.post(`${WHATSAPP_SERVICE_URL}/automate-marriage`);
-        consoleResponse(res5, "automate-marriage-whatsapp");
+        consoleResponse("Response at whatsapp-service ", res5, "automate-marriage-whatsapp");
         const res6 = await axios.post(`${WHATSAPP_SERVICE_URL}/automate-temple`);
-        consoleResponse(res6, "automate-temple-whatsapp");
+        consoleResponse("Response at whatsapp-service ", res6, "automate-temple-whatsapp");
     } catch (error) {
         console.log("Error", error);
     }
