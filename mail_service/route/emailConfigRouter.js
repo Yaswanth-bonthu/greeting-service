@@ -6,18 +6,19 @@ import {
     deleteEmailConfig,
     getAllEmailConfigs,
 } from "../controller/emailConfigController.js";
+import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 
-router.post("/", createEmailConfig);
+router.post("/", authMiddleware, createEmailConfig);
 
-router.put("/:user", updateEmailConfig);
+router.put("/", authMiddleware, updateEmailConfig);
 
-router.get("/:user", getEmailConfig);
+router.get("/", authMiddleware, getEmailConfig);
 
-router.delete("/:user", deleteEmailConfig);
+router.delete("/", authMiddleware, deleteEmailConfig);
 
-router.get("/email-configs", getAllEmailConfigs);
+router.get("/all", authMiddleware, getAllEmailConfigs);
 
 export default router;
