@@ -24,19 +24,26 @@ const EmailConfigPopup = ({ onClose }) => {
 	useEffect(() => {
 		const fetchEmailConfig = async () => {
 			try {
-				const token = localStorage.getItem("token");
-				const response = await axios.get(`${backendUrl}/email-config`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				
-				if (response.data?.emailConfig) {
-					setFormData(response.data.emailConfig);
-					setHasConfig(true);
-				} else {
-					setHasConfig(false);
-				}
+				// const token = localStorage.getItem("token");
+				// const response = await axios.get(`${backendUrl}/email-config`, {
+				// 	headers: {
+				// 		Authorization: `Bearer ${token}`,
+				// 	},
+				// });
+				setFormData({
+					email: "ravi@gmail.com",
+					passkey: "cdwednwndoeqwidwidn",
+					displayName: "Ravi",
+					emailType: "gmail",
+					status: "active",
+				})
+				setHasConfig(true);
+				// if (response.data?.emailConfig) {
+				// 	setFormData(response.data.emailConfig);
+				// 	setHasConfig(true);
+				// } else {
+				// 	setHasConfig(false);
+				// }
 			} catch (error) {
 				console.error("Error fetching email configuration: ", error);
 			} finally {
