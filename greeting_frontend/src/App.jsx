@@ -48,7 +48,7 @@ function App() {
         <Route element={<AdminDashboard />} path='/admin/dashboard' />
         <Route element={<ProtectedRoute element={<AddPost />} />} path='/addpost' />
         <Route element={<NotFoundPage />} path="*" />
-        <Route element={<ProfilePage />} path="/Profile" />
+        <Route element={<ProtectedRoute element={<ProfilePage />} />} path='/profile' />
       </Routes>
       <Footer />
     </BrowserRouter>
