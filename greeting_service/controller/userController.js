@@ -13,20 +13,20 @@ export const createUser = async (req, res) => {
 		if (existingUser) {
 			return res.status(400).json({ message: 'Email already in use' });
 		}
-		if(confirm_password !== password) {
-			return res.status(400).send({message: "Passwords are not matched..."});
+		if (confirm_password !== password) {
+			return res.status(400).send({ message: "Passwords are not matched..." });
 		}
 
 		const requiredFields = { first_name, last_name, email, password };
 		const missingFields = [];
 		Object.keys(requiredFields).forEach((key) => {
-			if(requiredFields[key] === undefined) {
+			if (requiredFields[key] === undefined) {
 				missingFields.push(key);
 			}
 		});
 
-		if(missingFields.length !== 0) {
-			return res.status(400).send({message: `${missingFields} are required...`});
+		if (missingFields.length !== 0) {
+			return res.status(400).send({ message: `${missingFields} are required...` });
 		}
 
 		const user = new User({
@@ -81,12 +81,12 @@ export const loginUser = async (req, res) => {
 // Get all users
 export const getAllUsers = async (req, res) => {
 	try {
-		const {page=1, limit=10} = req.query;
+		const { page = 1, limit = 10 } = req.query;
 		const skip = (page - 1) * limit;
 		const users = await User.find().select('-password').skip(skip).limit(limit);
 		const totalUsers = await User.countDocuments();
-	
-		res.status(200).send({totalPages: Math.ceil(totalUsers/limit), currentPage: page,  users});
+
+		res.status(200).send({ totalPages: Math.ceil(totalUsers / limit), currentPage: page, users });
 	} catch (err) {
 		res.status(500).json({ message: err.message });
 	}
@@ -95,7 +95,7 @@ export const getAllUsers = async (req, res) => {
 // Get a user by ID
 export const getUser = async (req, res) => {
 	try {
-		const user = await User.findById(req.user?.userId);
+		const user = await User.findById(req.user?.userId).select('-password');
 		if (!user) {
 			return res.status(404).json({ message: 'User not found' });
 		}
@@ -107,18 +107,40 @@ export const getUser = async (req, res) => {
 
 // Update a user
 export const updateUser = async (req, res) => {
-	const { first_name, last_name, email, password } = req.body;
+	const { first_name, last_name, email } = req.body;
 
 	try {
 		const updatedUser = await User.findByIdAndUpdate(
 			req.user?.userId,
-			{ first_name, last_name, email, password },
+			{ first_name, last_name, email },
 			{ new: true }
-		);
+		).select('-password');
 		if (!updatedUser) {
 			return res.status(404).json({ message: 'User not found' });
 		}
 		res.json(updatedUser);
+	} catch (err) {
+		res.status(400).json({ message: err.message });
+	}
+};
+
+// UPDATE USER PASSWORD
+export const updatePassword = async (req, res) => {
+	const { newPassword } = req.body;
+
+	try {
+		const user = await User.findById(req.user?.userId);
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+
+		// Hash new password before saving
+		const salt = await bcrypt.genSalt(10);
+		user.password = await bcrypt.hash(newPassword, salt);
+
+		await user.save();
+
+		res.json({ message: "Password updated successfully" });
 	} catch (err) {
 		res.status(400).json({ message: err.message });
 	}
@@ -139,24 +161,24 @@ export const deleteUser = async (req, res) => {
 };
 
 export const googleCallback = async (req, res) => {
-    try {
-        if (!req.user) {
-            return res.status(400).send({ error: "Authentication failed. No user found." });
-        }
+	try {
+		if (!req.user) {
+			return res.status(400).send({ error: "Authentication failed. No user found." });
+		}
 
-        const user = req.user;
-        const token = jwt.sign(
-            { userId: user._id, email: user.email },
-            process.env.JWT_SECRET,
-            { expiresIn: '1d' }
-        );
+		const user = req.user;
+		const token = jwt.sign(
+			{ userId: user._id, email: user.email },
+			process.env.JWT_SECRET,
+			{ expiresIn: '1d' }
+		);
 
-        const userName = `${user.first_name} ${user.last_name}`;
-        
-        
-        res.redirect(`${process.env.FRONTEND_URL}?token=${token}&userName=${userName}`);
-    } catch (error) {
-        console.error("Error in googleCallback:", error);
-        res.status(500).send({ error: "Internal server error..." });
-    }
+		const userName = `${user.first_name} ${user.last_name}`;
+
+
+		res.redirect(`${process.env.FRONTEND_URL}?token=${token}&userName=${userName}`);
+	} catch (error) {
+		console.error("Error in googleCallback:", error);
+		res.status(500).send({ error: "Internal server error..." });
+	}
 };

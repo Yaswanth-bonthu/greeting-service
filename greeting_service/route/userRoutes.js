@@ -8,6 +8,7 @@ import {
 	deleteUser,
 	loginUser,
 	googleCallback,
+	updatePassword,
 } from '../controller/userController.js';
 import passport from "passport";
 
@@ -22,6 +23,7 @@ router.get("/google/callback", passport.authenticate("google", {failureRedirect:
 router.get('/all', authMiddleware, getAllUsers);
 router.get('/', authMiddleware, getUser);
 router.put('/', authMiddleware, updateUser);
+router.put("/newpassword", authMiddleware, updatePassword);
 router.delete('/:id', authMiddleware, deleteUser);
 
 export default router;
