@@ -38,8 +38,8 @@ const ProfilePage = () => {
           )}
 
           {/* Gap after form section */}
-          <div className="mt-4"></div> {/* Added gap here */}
-          
+          <div className="mt-4"></div> 
+
           {/* Buttons Section */}
           <div className="flex justify-between mt-auto">
             <button 
