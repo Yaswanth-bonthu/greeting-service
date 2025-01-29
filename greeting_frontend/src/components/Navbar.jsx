@@ -26,6 +26,8 @@ const Navbar = ({ onLoginClick }) => {
 			setProfileImage('/avatars/admin.png');
 		}
 	}, [role]);
+	useEffect(() => getRandomImage(), []);
+
 	const token = localStorage.getItem("token");
 	const userName = localStorage.getItem("userName");
 	const handleLogout = () => {
@@ -94,7 +96,7 @@ const Navbar = ({ onLoginClick }) => {
 					)}
 					<button
 						className="block text-gray-600 focus:outline-none"
-						onClick={() => {setIsMenuOpen(!isMenuOpen);setIsOpen(false)}}
+						onClick={() => { setIsMenuOpen(!isMenuOpen); setIsOpen(false) }}
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
