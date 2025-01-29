@@ -95,7 +95,7 @@ export const getAllUsers = async (req, res) => {
 // Get a user by ID
 export const getUser = async (req, res) => {
 	try {
-		const user = await User.findById(req.user?.userId).select('-password');
+		const user = await User.findById(req.user?.userId);
 		if (!user) {
 			return res.status(404).json({ message: 'User not found' });
 		}
@@ -107,14 +107,14 @@ export const getUser = async (req, res) => {
 
 // Update a user
 export const updateUser = async (req, res) => {
-	const { first_name, last_name, email } = req.body;
+	const { first_name, last_name, email, password } = req.body;
 
 	try {
 		const updatedUser = await User.findByIdAndUpdate(
 			req.user?.userId,
-			{ first_name, last_name, email },
+			{ first_name, last_name, email, password },
 			{ new: true }
-		).select('-password');
+		);
 		if (!updatedUser) {
 			return res.status(404).json({ message: 'User not found' });
 		}
