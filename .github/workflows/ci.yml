@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  # Runs the workflow on push to the main branch
 
 jobs:
   build:
@@ -13,10 +13,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Login to DockerHub
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build the Docker image
-      run: docker build -t yaswanth789/cicd-pipeline .
+      run: docker build -t yaswanth789/cicd-pipeline -f greeting_frontend/Dockerfile greeting_frontend
 
-    - name: Push to DockerHub
+    - name: Push the Docker image to DockerHub
       run: docker push yaswanth789/cicd-pipeline:latest
