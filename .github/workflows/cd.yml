@@ -20,4 +20,4 @@ jobs:
       run: sudo docker rm -f cicd-pipeline-container || true
     
     - name: Run Docker Container (Frontend Only)
-      run: sudo docker run -d -p 3000:3000 --name cicd-pipeline-container yaswanth789/cicd-pipeline
+      run: sudo docker run -d -p 3000:80 --name cicd-pipeline-container yaswanth789/cicd-pipeline
