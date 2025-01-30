@@ -1,5 +1,5 @@
-# Use an official Node.js runtime as the base image
-FROM node:18
+# Use Node.js as the base image
+FROM node:18 AS build
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -10,11 +10,23 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application files to the working directory
+# Copy the rest of the application files
 COPY . .
 
-# Expose the port that the application listens on
-EXPOSE 3000
+# Build the React app for production
+RUN npm run build
 
-# Define the command to start the application
-CMD ["npm", "start"]
+# Use Nginx to serve the app
+FROM nginx:alpine
+
+# Remove default Nginx config
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy the built React app from the previous stage
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
+
+# Expose port 80 for Nginx to serve the app
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
