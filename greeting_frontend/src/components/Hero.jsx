@@ -6,7 +6,7 @@ const Hero = () => {
 			{/* Text on the Left */}
 			<div className="lg:w-2/3 w-1/2">
 				<h1 className="lg:text-5xl text-base lg:leading-[4rem] font-bold text-gray-800">
-					Celebrating Your Special Day with US
+					Celebrating Your Special Day with Us
 				</h1>
 			</div>
 
