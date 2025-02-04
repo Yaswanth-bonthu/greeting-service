@@ -1,0 +1,41 @@
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]  # Trigger CI/CD on push to main branch
+
+jobs:
+  ci:
+    name: Build & Push Frontend Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Login to DockerHub
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build Frontend Image
+      run: docker build -t yaswanth789/cicd-pipeline -f greeting_frontend/Dockerfile greeting_frontend
+
+    - name: Push Frontend Image
+      run: docker push yaswanth789/cicd-pipeline:latest
+
+  cd:
+    name: Deploy Frontend to AWS EC2
+    needs: ci
+    runs-on: self-hosted  # Ensure your EC2 instance is a self-hosted runner
+
+    steps:
+    - name: Pull Latest Frontend Image
+      run: sudo docker pull yaswanth789/cicd-pipeline:latest
+
+    - name: Remove Old Frontend Container
+      run: sudo docker rm -f cicd-pipeline-container || true
+
+    - name: Run New Frontend Container
+      run: sudo docker run -d -p 3000:80 --name cicd-pipeline-container yaswanth789/cicd-pipeline
